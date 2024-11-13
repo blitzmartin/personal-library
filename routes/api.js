@@ -32,6 +32,7 @@ module.exports = function (app) {
         })
         const newBook = await book.save()
         res.json(newBook)
+
       } catch (err) {
         console.log("There was an error while creating book: ", err)
       }
