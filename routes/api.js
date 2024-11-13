@@ -11,9 +11,14 @@ const { Book } = require('../models/models');
 module.exports = function (app) {
 
   app.route('/api/books')
-    .get(function (req, res) {
-      //response will be array of book objects
-      //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+    .get(async (req, res) => {
+      try {//response will be array of book objects
+        const books = await Book.find()
+        res.json(books)
+        //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]}
+      } catch (err) {
+        console.error("Error retrieving books:\n", err);
+      }
     })
 
     .post(async (req, res) => {
