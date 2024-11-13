@@ -14,7 +14,8 @@ module.exports = function (app) {
     .get(async (req, res) => {
       try {//response will be array of book objects
         const books = await Book.find()
-        res.json(books)
+        const bookData = books.map(b => ({ _id: b._id, title: b.title, commentcount: b.commentcount }))
+        res.json(bookData)
         //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]}
       } catch (err) {
         console.error("Error retrieving books:\n", err);
@@ -28,10 +29,12 @@ module.exports = function (app) {
           return res.json({ error: "missing required field title" })
         }
         const book = new Book({
-          title
+          title,
+          commentcount: 0,
+          comments: []
         })
         const newBook = await book.save()
-        res.json(newBook)
+        res.json({ _id: newBook._id, title: newBook.title, commentcount: newBook.commentcount })
 
       } catch (err) {
         console.log("There was an error while creating book: ", err)
