@@ -59,7 +59,8 @@ module.exports = function (app) {
         if (!book) {
           return res.send('no book exists')
         }
-        res.json({ _id: book._id, title: book.title, comments: book.comments })
+        const result = { _id: book._id, title: book.title, comments: book.comments }
+        res.json(result)
       } catch (err) {
         console.log(err)
       }
