@@ -12,10 +12,10 @@ module.exports = function (app) {
 
   app.route('/api/books')
     .get(async (req, res) => {
-      try {//response will be array of book objects
-        const books = await Book.find()
-        const bookData = books.map(b => ({ _id: b._id, title: b.title, commentcount: b.commentcount }))
-        res.json(bookData)
+      try {
+        const data = await Book.find()
+        const books = data.map(b => ({ _id: b._id, title: b.title, commentcount: b.commentcount ?? 0 }))
+        res.json(books)
         //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]}
       } catch (err) {
         console.error("Error retrieving books:\n", err);
