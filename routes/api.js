@@ -8,6 +8,8 @@
 
 'use strict';
 const { Book } = require('../models/models');
+const mongoose = require('mongoose');
+
 module.exports = function (app) {
 
   app.route('/api/books')
@@ -47,10 +49,23 @@ module.exports = function (app) {
 
 
   app.route('/api/books/:id')
-    .get(function (req, res) {
-      let bookid = req.params.id;
-      //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+    .get(async (req, res) => {
+      const bookid = req.params.id;
+      if (!mongoose.Types.ObjectId.isValid(bookid)) {
+        return res.json({ error: 'invalid id', '_id': _id });
+      }
+      try {
+        const book = await Book.findById(bookid)
+        if (!book) {
+          return res.send('no book exists')
+        }
+        res.json({ _id: book._id, title: book.title, comments: book.comments })
+      } catch (err) {
+        console.log(err)
+      }
     })
+    //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+
 
     .post(function (req, res) {
       let bookid = req.params.id;
