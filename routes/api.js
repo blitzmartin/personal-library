@@ -52,7 +52,7 @@ module.exports = function (app) {
     .get(async (req, res) => {
       const bookid = req.params.id;
       if (!mongoose.Types.ObjectId.isValid(bookid)) {
-        return res.json({ error: 'invalid id', '_id': _id });
+        return res.json({ error: 'invalid id', '_id': bookid });
       }
       try {
         const book = await Book.findById(bookid)

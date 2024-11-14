@@ -94,7 +94,7 @@ suite('Functional Tests', function () {
           .get('/api/books/invalid_id')
           .end(function (err, res) {
             assert.equal(res.status, 200);
-            assert.equal(res.text, 'no book exists');
+            assert.deepEqual(res.body, { error: 'invalid id', _id: 'invalid_id' });
             done();
           });
       });
