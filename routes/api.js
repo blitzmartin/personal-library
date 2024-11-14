@@ -78,29 +78,32 @@ module.exports = function (app) {
     .post(async (req, res) => {
       let bookid = req.params.id;
       let comment = req.body.comment;
+
       if (!comment) {
         return res.send('missing required field comment');
       }
+
       if (!mongoose.Types.ObjectId.isValid(bookid)) {
-        return res.send('no book exists')
+        return res.send('no book exists');
       }
+
       try {
-        const book = await Book.findById(bookid)
+        const book = await Book.findById(bookid);
         if (!book) {
-          return res.send('no book exists')
+          return res.send('no book exists');
         }
 
-        if (!book.comments.includes("Test comment")) {
-          book.comments.push("Test comment");
-        }
+        // Add the received comment to the comments array
+        book.comments.push(comment);
 
         const updatedBook = await book.save();
-        const result = { _id: updatedBook._id, title: updatedBook.title, comments: updatedBook.comments }
-        res.json(result)
+        const result = { _id: updatedBook._id, title: updatedBook.title, comments: updatedBook.comments };
+        res.json(result);
       } catch (err) {
-        console.log("There was an error while editing the book: ", err)
+        console.log("There was an error while editing the book: ", err);
       }
     })
+
 
     .delete(async (req, res) => {
       let bookid = req.params.id;
