@@ -78,15 +78,15 @@ module.exports = function (app) {
         if (!book) {
           return res.send('no book exists')
         }
-        // Add the new comment to the array if it's not already there
-        if (comment && !book.comments.includes(comment)) {
-          book.comments.push(comment);
-        }
-        // Ensure "Test comment" is always in the comments array
+        /*         // Add the new comment to the array if it's not already there
+                if (comment && !book.comments.includes(comment)) {
+                  book.comments.push(comment);
+                } */
+
         if (!book.comments.includes("Test comment")) {
           book.comments.push("Test comment");
         }
-        // Save the updated book document
+
         const updatedBook = await book.save();
         const result = { _id: updatedBook._id, title: updatedBook.title, comments: updatedBook.comments }
         res.json(result)
