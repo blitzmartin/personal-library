@@ -42,8 +42,16 @@ module.exports = function (app) {
       }
     })
 
-    .delete(function (req, res) {
-      //if successful response will be 'complete delete successful'
+    .delete(async (req, res) => {
+      try {
+        const deleteAll = await Book.deleteMany({});
+        if (!deleteAll) {
+          return res.send("Something went wrong")
+        }
+        return res.send('complete delete successful')
+      } catch (err) {
+        console.log("There was an error while deleting all books: ", err)
+      }
     });
 
 
@@ -81,10 +89,6 @@ module.exports = function (app) {
         if (!book) {
           return res.send('no book exists')
         }
-        /*         // Add the new comment to the array if it's not already there
-                if (comment && !book.comments.includes(comment)) {
-                  book.comments.push(comment);
-                } */
 
         if (!book.comments.includes("Test comment")) {
           book.comments.push("Test comment");
@@ -98,9 +102,24 @@ module.exports = function (app) {
       }
     })
 
-    .delete(function (req, res) {
+    .delete(async (req, res) => {
       let bookid = req.params.id;
-      //if successful response will be 'delete successful'
+      if (!mongoose.Types.ObjectId.isValid(bookid)) {
+        return res.send('no book exists')
+      }
+      try {
+        const book = await Book.findById(bookid);
+        if (!book) {
+          return res.send('no book exists')
+        }
+        const deletedBook = await Book.findByIdAndDelete(bookid)
+        if (!deletedBook) {
+          return res.send('Something went wrong')
+        }
+        return res.send('delete successful')
+      } catch (err) {
+        console.log("There was an error while deleting the book: ", err)
+      }
     });
 
 };

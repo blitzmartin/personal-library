@@ -144,11 +144,11 @@ suite('Functional Tests', function () {
 
       test('Test POST /api/books/[id] with comment, id not in db', function (done) {
         chai.request(server)
-          .post('/api/books/invalid_id') // Invalid ID that doesn't exist in the DB
-          .send({ comment: 'Test comment' }) // Send a comment
+          .post('/api/books/invalid_id')
+          .send({ comment: 'Test comment' })
           .end(function (err, res) {
-            assert.equal(res.status, 200); // Assuming the API responds with a 200 status
-            assert.equal(res.text, 'no book exists'); // Check that the response text is as expected
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'no book exists');
             done();
           });
       });
