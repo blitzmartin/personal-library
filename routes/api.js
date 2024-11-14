@@ -70,8 +70,11 @@ module.exports = function (app) {
     .post(async (req, res) => {
       let bookid = req.params.id;
       let comment = req.body.comment;
+      if (!comment) {
+        return res.send('missing required field comment');
+      }
       if (!mongoose.Types.ObjectId.isValid(bookid)) {
-        return res.json({ error: 'invalid id', '_id': bookid });
+        return res.send('no book exists')
       }
       try {
         const book = await Book.findById(bookid)
