@@ -62,16 +62,22 @@ module.exports = function (app) {
         const result = { _id: book._id, title: book.title, comments: book.comments }
         res.json(result)
       } catch (err) {
-        console.log(err)
+        console.log("There was an error while fetching the book: ", err)
       }
     })
-    //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
 
 
     .post(function (req, res) {
       let bookid = req.params.id;
       let comment = req.body.comment;
-      //json res format same as .get
+      if (!mongoose.Types.ObjectId.isValid(bookid)) {
+        return res.json({ error: 'invalid id', '_id': bookid });
+      }
+      try {
+
+      } catch (err) {
+        console.log("There was an error while editing the book: ", err)
+      }
     })
 
     .delete(function (req, res) {
